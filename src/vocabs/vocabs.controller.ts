@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Patch,
   Post,
@@ -21,7 +22,11 @@ export class VocabsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.vocabsService.findOne(id);
+    const vocab = this.vocabsService.findOne(id);
+    if (!vocab) {
+      throw new NotFoundException(`Vocab #${id} not found!`);
+    }
+    return vocab;
   }
 
   @Post()
